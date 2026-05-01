@@ -9,20 +9,14 @@ public class Phone {
     private String model;
     private double price;
     private int year;
+    private int memory;
 
-    /**
-     * Creates a phone object.
-     *
-     * @param brand phone brand
-     * @param model phone model
-     * @param price phone price
-     * @param year phone release year
-     */
-    public Phone(String brand, String model, double price, int year) {
+    public Phone(String brand, String model, double price, int year, int memory) {
         setBrand(brand);
         setModel(model);
         setPrice(price);
         setYear(year);
+        setMemory(memory);
     }
 
     public String getBrand() {
@@ -69,6 +63,17 @@ public class Phone {
         this.year = year;
     }
 
+    public int getMemory() {
+        return memory;
+    }
+
+    public void setMemory(int memory) {
+        if (memory <= 0) {
+            throw new IllegalArgumentException("Memory must be greater than 0.");
+        }
+        this.memory = memory;
+    }
+
     @Override
     public String toString() {
         return "Phone{" +
@@ -76,6 +81,7 @@ public class Phone {
                 ", model='" + model + '\'' +
                 ", price=" + price +
                 ", year=" + year +
+                ", memory=" + memory +
                 '}';
     }
 
@@ -93,6 +99,7 @@ public class Phone {
 
         return Double.compare(phone.price, price) == 0
                 && year == phone.year
+                && memory == phone.memory
                 && Objects.equals(brand, phone.brand)
                 && Objects.equals(model, phone.model);
     }

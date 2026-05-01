@@ -59,9 +59,12 @@ public class Main {
 
             System.out.print("Year: ");
             int year = Integer.parseInt(scanner.nextLine());
+	    
+	    System.out.print("Memory (GB): ");
+	    int memory = Integer.parseInt(scanner.nextLine());
 
-            Phone phone = new Phone(brand, model, price, year);
-            phones.add(phone);
+	    phones.add(new Phone(brand, model, price, year, memory));
+
 
             System.out.println("Phone was created successfully.");
         } catch (NumberFormatException e) {

@@ -1,7 +1,8 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
- * Driver class for testing Phone objects.
+ * Driver class for working with phones.
  */
 public class Main {
 
@@ -11,14 +12,75 @@ public class Main {
      * @param args command-line arguments
      */
     public static void main(String[] args) {
-
         ArrayList<Phone> phones = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
 
-        phones.add(new Phone("Apple", "iPhone 15", 999.99));
-        phones.add(new Phone("Samsung", "Galaxy S24", 899.99));
-        phones.add(new Phone("Xiaomi", "Redmi Note 13", 299.99));
-        phones.add(new Phone("Google", "Pixel 8", 799.99));
-        phones.add(new Phone("OnePlus", "12", 749.99));
+        boolean running = true;
+
+        while (running) {
+            System.out.println();
+            System.out.println("1 - Create new phone");
+            System.out.println("2 - Show all phones");
+            System.out.println("0 - Exit");
+            System.out.print("Choose option: ");
+
+            String choice = scanner.nextLine();
+
+            if ("1".equals(choice)) {
+                createPhone(scanner, phones);
+            } else if ("2".equals(choice)) {
+                showPhones(phones);
+            } else if ("0".equals(choice)) {
+                running = false;
+            } else {
+                System.out.println("Invalid menu option.");
+            }
+        }
+
+        scanner.close();
+    }
+
+    /**
+     * Creates a phone from console input.
+     *
+     * @param scanner scanner for input
+     * @param phones list of phones
+     */
+    private static void createPhone(Scanner scanner, ArrayList<Phone> phones) {
+        try {
+            System.out.print("Brand: ");
+            String brand = scanner.nextLine();
+
+            System.out.print("Model: ");
+            String model = scanner.nextLine();
+
+            System.out.print("Price: ");
+            double price = Double.parseDouble(scanner.nextLine());
+
+            System.out.print("Year: ");
+            int year = Integer.parseInt(scanner.nextLine());
+
+            Phone phone = new Phone(brand, model, price, year);
+            phones.add(phone);
+
+            System.out.println("Phone was created successfully.");
+        } catch (NumberFormatException e) {
+            System.out.println("Error: price and year must be numeric.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Shows all created phones.
+     *
+     * @param phones list of phones
+     */
+    private static void showPhones(ArrayList<Phone> phones) {
+        if (phones.isEmpty()) {
+            System.out.println("No phones created.");
+            return;
+        }
 
         for (Phone phone : phones) {
             System.out.println(phone);

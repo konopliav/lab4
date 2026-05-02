@@ -1,11 +1,9 @@
 import java.util.Objects;
 
 /**
- * Class that represents a phone.
+ * Base class that represents a phone.
  */
 public class Phone {
-
-    private static int createdCount = 0;
 
     private String brand;
     private String model;
@@ -13,7 +11,6 @@ public class Phone {
     private int year;
     private int memory;
     private PhoneType type;
-    private Manufacturer manufacturer;
 
     /**
      * Creates a phone object.
@@ -24,18 +21,15 @@ public class Phone {
      * @param year release year
      * @param memory phone memory in GB
      * @param type phone type
-     * @param manufacturer phone manufacturer
      */
     public Phone(String brand, String model, double price, int year,
-                 int memory, PhoneType type, Manufacturer manufacturer) {
+                 int memory, PhoneType type) {
         setBrand(brand);
         setModel(model);
         setPrice(price);
         setYear(year);
         setMemory(memory);
         setType(type);
-        setManufacturer(manufacturer);
-        createdCount++;
     }
 
     /**
@@ -54,17 +48,6 @@ public class Phone {
         setYear(other.year);
         setMemory(other.memory);
         setType(other.type);
-        setManufacturer(new Manufacturer(other.manufacturer));
-        createdCount++;
-    }
-
-    /**
-     * Returns count of created phone objects.
-     *
-     * @return created phone count
-     */
-    public static int getCreatedCount() {
-        return createdCount;
     }
 
     public String getBrand() {
@@ -139,18 +122,6 @@ public class Phone {
         this.type = type;
     }
 
-    public Manufacturer getManufacturer() {
-        return new Manufacturer(manufacturer);
-    }
-
-    public void setManufacturer(Manufacturer manufacturer) {
-        if (manufacturer == null) {
-            throw new IllegalArgumentException("Manufacturer cannot be null.");
-        }
-
-        this.manufacturer = new Manufacturer(manufacturer);
-    }
-
     @Override
     public String toString() {
         return "Phone{" +
@@ -160,7 +131,6 @@ public class Phone {
                 ", year=" + year +
                 ", memory=" + memory +
                 ", type=" + type +
-                ", manufacturer=" + manufacturer +
                 '}';
     }
 
@@ -181,7 +151,6 @@ public class Phone {
                 && memory == phone.memory
                 && Objects.equals(brand, phone.brand)
                 && Objects.equals(model, phone.model)
-                && type == phone.type
-                && Objects.equals(manufacturer, phone.manufacturer);
+                && type == phone.type;
     }
 }

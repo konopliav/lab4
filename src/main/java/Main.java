@@ -10,8 +10,8 @@ public class Main {
         ArrayList<Phone> phones = FileManager.loadFromFile("input.txt");
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Practice work 8");
-        System.out.println("Hierarchy extension and polymorphism");
+        System.out.println("Practice work 9");
+        System.out.println("File loading and saving");
 
         boolean running = true;
 
@@ -29,6 +29,8 @@ public class Main {
             } else if ("2".equals(choice)) {
                 showPhones(phones);
             } else if ("0".equals(choice)) {
+                FileManager.saveToFile(phones, "input.txt");
+                System.out.println("Data saved to input.txt.");
                 running = false;
             } else {
                 System.out.println("Invalid menu option.");
@@ -62,7 +64,7 @@ public class Main {
         } else if ("5".equals(choice)) {
             createBusinessPhone(scanner, phones);
         } else if ("0".equals(choice)) {
-    	    running = false;
+            System.out.println("Back to main menu.");
         } else {
             System.out.println("Invalid object type.");
         }

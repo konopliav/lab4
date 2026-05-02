@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        ArrayList<Phone> phones = new ArrayList<>();
+        ArrayList<Phone> phones = FileManager.loadFromFile("input.txt");
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Practice work 8");
@@ -62,7 +62,7 @@ public class Main {
         } else if ("5".equals(choice)) {
             createBusinessPhone(scanner, phones);
         } else if ("0".equals(choice)) {
-            System.out.println("Back to main menu.");
+    	    running = false;
         } else {
             System.out.println("Invalid object type.");
         }

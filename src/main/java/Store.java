@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Store class that contains phones and their quantities.
@@ -53,6 +54,29 @@ public class Store {
 
         for (int i = 0; i < phones.size(); i++) {
             System.out.println(phones.get(i) + " | quantity: " + quantities.get(i));
+        }
+    }
+
+    /**
+     * Shows all phones sorted by model.
+     */
+    public void showSorted() {
+        if (phones.isEmpty()) {
+            System.out.println("Store is empty.");
+            return;
+        }
+
+        ArrayList<Phone> sortedPhones = new ArrayList<>();
+
+        for (Phone phone : phones) {
+            sortedPhones.add(phone);
+        }
+
+        Collections.sort(sortedPhones);
+
+        for (Phone phone : sortedPhones) {
+            int index = phones.indexOf(phone);
+            System.out.println(phone + " | quantity: " + quantities.get(index));
         }
     }
 

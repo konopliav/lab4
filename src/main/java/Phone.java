@@ -1,9 +1,9 @@
 import java.util.Objects;
 
 /**
- * Base class that represents a phone.
+ * Abstract base class that represents a phone.
  */
-public class Phone {
+public abstract class Phone implements Comparable<Phone> {
 
     private String brand;
     private String model;
@@ -12,16 +12,6 @@ public class Phone {
     private int memory;
     private PhoneType type;
 
-    /**
-     * Creates a phone object.
-     *
-     * @param brand phone brand
-     * @param model phone model
-     * @param price phone price
-     * @param year release year
-     * @param memory phone memory in GB
-     * @param type phone type
-     */
     public Phone(String brand, String model, double price, int year,
                  int memory, PhoneType type) {
         setBrand(brand);
@@ -32,11 +22,6 @@ public class Phone {
         setType(type);
     }
 
-    /**
-     * Copy constructor.
-     *
-     * @param other phone to copy
-     */
     public Phone(Phone other) {
         if (other == null) {
             throw new IllegalArgumentException("Phone cannot be null.");
@@ -48,6 +33,11 @@ public class Phone {
         setYear(other.year);
         setMemory(other.memory);
         setType(other.type);
+    }
+
+    @Override
+    public int compareTo(Phone other) {
+        return this.model.compareToIgnoreCase(other.model);
     }
 
     public String getBrand() {

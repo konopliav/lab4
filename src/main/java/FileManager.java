@@ -1,28 +1,27 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Class for loading and saving phone objects from and to file.
+ * Class for loading and saving store data.
  */
 public class FileManager {
 
     /**
-     * Loads phones from file.
+     * Loads store from file.
      *
      * @param fileName file name
-     * @return list of phones
+     * @return loaded store
      */
-    public static ArrayList<Phone> loadFromFile(String fileName) {
-        ArrayList<Phone> phones = new ArrayList<>();
+    public static Store loadStoreFromFile(String fileName) {
+        Store store = new Store();
 
         try {
             File file = new File(fileName);
 
             if (!file.exists()) {
-                return phones;
+                return store;
             }
 
             Scanner scanner = new Scanner(file);
@@ -36,7 +35,8 @@ public class FileManager {
 
                 try {
                     Phone phone = parsePhone(line);
-                    phones.add(phone);
+                    int quantity = parseQuantity(line);
+                    store.addNewPhone(phone, quantity);
                 } catch (IllegalArgumentException e) {
                     System.out.println("Invalid line skipped: " + line);
                 }
@@ -47,21 +47,21 @@ public class FileManager {
             System.out.println("File reading error: " + e.getMessage());
         }
 
-        return phones;
+        return store;
     }
 
     /**
-     * Saves phones to file.
+     * Saves store to file.
      *
-     * @param phones list of phones
+     * @param store store object
      * @param fileName file name
      */
-    public static void saveToFile(ArrayList<Phone> phones, String fileName) {
+    public static void saveStoreToFile(Store store, String fileName) {
         try {
             FileWriter writer = new FileWriter(fileName);
 
-            for (Phone phone : phones) {
-                writer.write(formatPhone(phone) + "\n");
+            for (int i = 0; i < store.size(); i++) {
+                writer.write(formatPhone(store.getPhone(i), store.getQuantity(i)) + "\n");
             }
 
             writer.close();
@@ -70,12 +70,11 @@ public class FileManager {
         }
     }
 
-    /**
-     * Parses one line from file and creates phone object.
-     *
-     * @param line file line
-     * @return phone object
-     */
+    private static int parseQuantity(String line) {
+        String[] parts = line.split(";");
+        return Integer.parseInt(parts[parts.length - 1]);
+    }
+
     private static Phone parsePhone(String line) {
         String[] parts = line.split(";");
 
@@ -86,7 +85,7 @@ public class FileManager {
         String type = parts[0];
 
         if ("PHONE".equals(type)) {
-            if (parts.length != 7) {
+            if (parts.length != 8) {
                 throw new IllegalArgumentException("Invalid PHONE data.");
             }
 
@@ -101,7 +100,7 @@ public class FileManager {
         }
 
         if ("SMARTPHONE".equals(type)) {
-            if (parts.length != 8) {
+            if (parts.length != 9) {
                 throw new IllegalArgumentException("Invalid SMARTPHONE data.");
             }
 
@@ -117,7 +116,7 @@ public class FileManager {
         }
 
         if ("KEYPADPHONE".equals(type)) {
-            if (parts.length != 8) {
+            if (parts.length != 9) {
                 throw new IllegalArgumentException("Invalid KEYPADPHONE data.");
             }
 
@@ -133,7 +132,7 @@ public class FileManager {
         }
 
         if ("GAMINGPHONE".equals(type)) {
-            if (parts.length != 10) {
+            if (parts.length != 11) {
                 throw new IllegalArgumentException("Invalid GAMINGPHONE data.");
             }
 
@@ -151,7 +150,7 @@ public class FileManager {
         }
 
         if ("BUSINESSPHONE".equals(type)) {
-            if (parts.length != 10) {
+            if (parts.length != 11) {
                 throw new IllegalArgumentException("Invalid BUSINESSPHONE data.");
             }
 
@@ -171,13 +170,7 @@ public class FileManager {
         throw new IllegalArgumentException("Unknown phone type.");
     }
 
-    /**
-     * Converts phone object to file line.
-     *
-     * @param phone phone object
-     * @return formatted line
-     */
-    private static String formatPhone(Phone phone) {
+    private static String formatPhone(Phone phone, int quantity) {
         if (phone instanceof GamingPhone) {
             GamingPhone gamingPhone = (GamingPhone) phone;
 
@@ -190,7 +183,8 @@ public class FileManager {
                     gamingPhone.getOperatingSystem() + ";" +
                     gamingPhone.isHasFiveG() + ";" +
                     gamingPhone.isHasCoolingSystem() + ";" +
-                    gamingPhone.getBatteryCapacity();
+                    gamingPhone.getBatteryCapacity() + ";" +
+                    quantity;
         }
 
         if (phone instanceof BusinessPhone) {
@@ -205,7 +199,8 @@ public class FileManager {
                     businessPhone.getOperatingSystem() + ";" +
                     businessPhone.isHasFiveG() + ";" +
                     businessPhone.isHasESim() + ";" +
-                    businessPhone.getSecurityLevel();
+                    businessPhone.getSecurityLevel() + ";" +
+                    quantity;
         }
 
         if (phone instanceof SmartPhone) {
@@ -218,7 +213,8 @@ public class FileManager {
                     smartPhone.getYear() + ";" +
                     smartPhone.getMemory() + ";" +
                     smartPhone.getOperatingSystem() + ";" +
-                    smartPhone.isHasFiveG();
+                    smartPhone.isHasFiveG() + ";" +
+                    quantity;
         }
 
         if (phone instanceof KeypadPhone) {
@@ -231,7 +227,8 @@ public class FileManager {
                     keypadPhone.getYear() + ";" +
                     keypadPhone.getMemory() + ";" +
                     keypadPhone.isHasTorch() + ";" +
-                    keypadPhone.getKeyboardType();
+                    keypadPhone.getKeyboardType() + ";" +
+                    quantity;
         }
 
         return "PHONE;" +
@@ -240,6 +237,7 @@ public class FileManager {
                 phone.getPrice() + ";" +
                 phone.getYear() + ";" +
                 phone.getMemory() + ";" +
-                phone.getType();
+                phone.getType() + ";" +
+                quantity;
     }
 }

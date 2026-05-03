@@ -1,17 +1,16 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Driver class for working with phones.
+ * Driver class for working with phone store.
  */
 public class Main {
 
     public static void main(String[] args) {
-        ArrayList<Phone> phones = FileManager.loadFromFile("input.txt");
+        Store store = FileManager.loadStoreFromFile("input.txt");
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Practice work 10");
-        System.out.println("Search in collections");
+        System.out.println("Practice work 11");
+        System.out.println("Collections, aggregation, wrapper class");
 
         boolean running = true;
 
@@ -26,13 +25,13 @@ public class Main {
             String choice = scanner.nextLine();
 
             if ("1".equals(choice)) {
-                searchMenu(scanner, phones);
+                searchMenu(scanner, store);
             } else if ("2".equals(choice)) {
-                createObjectMenu(scanner, phones);
+                createObjectMenu(scanner, store);
             } else if ("3".equals(choice)) {
-                showPhones(phones);
+                store.showAll();
             } else if ("0".equals(choice)) {
-                FileManager.saveToFile(phones, "input.txt");
+                FileManager.saveStoreToFile(store, "input.txt");
                 System.out.println("Data saved to input.txt.");
                 running = false;
             } else {
@@ -43,7 +42,7 @@ public class Main {
         scanner.close();
     }
 
-    private static void searchMenu(Scanner scanner, ArrayList<Phone> phones) {
+    private static void searchMenu(Scanner scanner, Store store) {
         System.out.println();
         System.out.println("Search by:");
         System.out.println("1 - Brand");
@@ -55,11 +54,25 @@ public class Main {
         String choice = scanner.nextLine();
 
         if ("1".equals(choice)) {
-            searchByBrand(scanner, phones);
+            System.out.print("Enter brand: ");
+            String brand = scanner.nextLine();
+            store.searchByBrand(brand);
         } else if ("2".equals(choice)) {
-            searchByYear(scanner, phones);
+            try {
+                System.out.print("Enter year: ");
+                int year = Integer.parseInt(scanner.nextLine());
+                store.searchByYear(year);
+            } catch (NumberFormatException e) {
+                System.out.println("Error: year must be numeric.");
+            }
         } else if ("3".equals(choice)) {
-            searchByMaxPrice(scanner, phones);
+            try {
+                System.out.print("Enter maximum price: ");
+                double maxPrice = Double.parseDouble(scanner.nextLine());
+                store.searchByMaxPrice(maxPrice);
+            } catch (NumberFormatException e) {
+                System.out.println("Error: price must be numeric.");
+            }
         } else if ("0".equals(choice)) {
             System.out.println("Back to main menu.");
         } else {
@@ -67,69 +80,7 @@ public class Main {
         }
     }
 
-    private static void searchByBrand(Scanner scanner, ArrayList<Phone> phones) {
-        System.out.print("Enter brand: ");
-        String brand = scanner.nextLine();
-
-        boolean found = false;
-
-        for (Phone phone : phones) {
-            if (phone.getBrand().equalsIgnoreCase(brand)) {
-                System.out.println(phone);
-                found = true;
-            }
-        }
-
-        if (!found) {
-            System.out.println("No objects found.");
-        }
-    }
-
-    private static void searchByYear(Scanner scanner, ArrayList<Phone> phones) {
-        try {
-            System.out.print("Enter year: ");
-            int year = Integer.parseInt(scanner.nextLine());
-
-            boolean found = false;
-
-            for (Phone phone : phones) {
-                if (phone.getYear() == year) {
-                    System.out.println(phone);
-                    found = true;
-                }
-            }
-
-            if (!found) {
-                System.out.println("No objects found.");
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Error: year must be numeric.");
-        }
-    }
-
-    private static void searchByMaxPrice(Scanner scanner, ArrayList<Phone> phones) {
-        try {
-            System.out.print("Enter maximum price: ");
-            double maxPrice = Double.parseDouble(scanner.nextLine());
-
-            boolean found = false;
-
-            for (Phone phone : phones) {
-                if (phone.getPrice() <= maxPrice) {
-                    System.out.println(phone);
-                    found = true;
-                }
-            }
-
-            if (!found) {
-                System.out.println("No objects found.");
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Error: price must be numeric.");
-        }
-    }
-
-    private static void createObjectMenu(Scanner scanner, ArrayList<Phone> phones) {
+    private static void createObjectMenu(Scanner scanner, Store store) {
         System.out.println();
         System.out.println("Choose object type:");
         System.out.println("1 - Phone");
@@ -143,15 +94,15 @@ public class Main {
         String choice = scanner.nextLine();
 
         if ("1".equals(choice)) {
-            createBasePhone(scanner, phones);
+            createBasePhone(scanner, store);
         } else if ("2".equals(choice)) {
-            createSmartPhone(scanner, phones);
+            createSmartPhone(scanner, store);
         } else if ("3".equals(choice)) {
-            createKeypadPhone(scanner, phones);
+            createKeypadPhone(scanner, store);
         } else if ("4".equals(choice)) {
-            createGamingPhone(scanner, phones);
+            createGamingPhone(scanner, store);
         } else if ("5".equals(choice)) {
-            createBusinessPhone(scanner, phones);
+            createBusinessPhone(scanner, store);
         } else if ("0".equals(choice)) {
             System.out.println("Back to main menu.");
         } else {
@@ -159,7 +110,12 @@ public class Main {
         }
     }
 
-    private static void createBasePhone(Scanner scanner, ArrayList<Phone> phones) {
+    private static int readQuantity(Scanner scanner) {
+        System.out.print("Quantity: ");
+        return Integer.parseInt(scanner.nextLine());
+    }
+
+    private static void createBasePhone(Scanner scanner, Store store) {
         try {
             System.out.print("Brand: ");
             String brand = scanner.nextLine();
@@ -176,10 +132,12 @@ public class Main {
             System.out.print("Memory (GB): ");
             int memory = Integer.parseInt(scanner.nextLine());
 
-            Phone phone = new Phone(brand, model, price, year, memory, PhoneType.BUTTON_PHONE);
-            phones.add(phone);
+            int quantity = readQuantity(scanner);
 
-            System.out.println("Phone was created successfully.");
+            Phone phone = new Phone(brand, model, price, year, memory, PhoneType.BUTTON_PHONE);
+            store.addNewPhone(phone, quantity);
+
+            System.out.println("Phone was added successfully.");
         } catch (NumberFormatException e) {
             System.out.println("Error: numeric value expected.");
         } catch (IllegalArgumentException e) {
@@ -187,7 +145,7 @@ public class Main {
         }
     }
 
-    private static void createSmartPhone(Scanner scanner, ArrayList<Phone> phones) {
+    private static void createSmartPhone(Scanner scanner, Store store) {
         try {
             System.out.print("Brand: ");
             String brand = scanner.nextLine();
@@ -210,11 +168,13 @@ public class Main {
             System.out.print("Has 5G (true/false): ");
             boolean hasFiveG = Boolean.parseBoolean(scanner.nextLine());
 
+            int quantity = readQuantity(scanner);
+
             Phone phone = new SmartPhone(brand, model, price, year, memory,
                     operatingSystem, hasFiveG);
-            phones.add(phone);
+            store.addNewPhone(phone, quantity);
 
-            System.out.println("SmartPhone was created successfully.");
+            System.out.println("SmartPhone was added successfully.");
         } catch (NumberFormatException e) {
             System.out.println("Error: numeric value expected.");
         } catch (IllegalArgumentException e) {
@@ -222,7 +182,7 @@ public class Main {
         }
     }
 
-    private static void createKeypadPhone(Scanner scanner, ArrayList<Phone> phones) {
+    private static void createKeypadPhone(Scanner scanner, Store store) {
         try {
             System.out.print("Brand: ");
             String brand = scanner.nextLine();
@@ -245,11 +205,13 @@ public class Main {
             System.out.print("Keyboard type: ");
             String keyboardType = scanner.nextLine();
 
+            int quantity = readQuantity(scanner);
+
             Phone phone = new KeypadPhone(brand, model, price, year, memory,
                     hasTorch, keyboardType);
-            phones.add(phone);
+            store.addNewPhone(phone, quantity);
 
-            System.out.println("KeypadPhone was created successfully.");
+            System.out.println("KeypadPhone was added successfully.");
         } catch (NumberFormatException e) {
             System.out.println("Error: numeric value expected.");
         } catch (IllegalArgumentException e) {
@@ -257,7 +219,7 @@ public class Main {
         }
     }
 
-    private static void createGamingPhone(Scanner scanner, ArrayList<Phone> phones) {
+    private static void createGamingPhone(Scanner scanner, Store store) {
         try {
             System.out.print("Brand: ");
             String brand = scanner.nextLine();
@@ -286,11 +248,13 @@ public class Main {
             System.out.print("Battery capacity: ");
             int batteryCapacity = Integer.parseInt(scanner.nextLine());
 
+            int quantity = readQuantity(scanner);
+
             Phone phone = new GamingPhone(brand, model, price, year, memory,
                     operatingSystem, hasFiveG, hasCoolingSystem, batteryCapacity);
-            phones.add(phone);
+            store.addNewPhone(phone, quantity);
 
-            System.out.println("GamingPhone was created successfully.");
+            System.out.println("GamingPhone was added successfully.");
         } catch (NumberFormatException e) {
             System.out.println("Error: numeric value expected.");
         } catch (IllegalArgumentException e) {
@@ -298,7 +262,7 @@ public class Main {
         }
     }
 
-    private static void createBusinessPhone(Scanner scanner, ArrayList<Phone> phones) {
+    private static void createBusinessPhone(Scanner scanner, Store store) {
         try {
             System.out.print("Brand: ");
             String brand = scanner.nextLine();
@@ -327,26 +291,17 @@ public class Main {
             System.out.print("Security level: ");
             String securityLevel = scanner.nextLine();
 
+            int quantity = readQuantity(scanner);
+
             Phone phone = new BusinessPhone(brand, model, price, year, memory,
                     operatingSystem, hasFiveG, hasESim, securityLevel);
-            phones.add(phone);
+            store.addNewPhone(phone, quantity);
 
-            System.out.println("BusinessPhone was created successfully.");
+            System.out.println("BusinessPhone was added successfully.");
         } catch (NumberFormatException e) {
             System.out.println("Error: numeric value expected.");
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
-        }
-    }
-
-    private static void showPhones(ArrayList<Phone> phones) {
-        if (phones.isEmpty()) {
-            System.out.println("No objects created.");
-            return;
-        }
-
-        for (Phone phone : phones) {
-            System.out.println(phone);
         }
     }
 }

@@ -9,8 +9,8 @@ public class Main {
         Store store = FileManager.loadStoreFromFile("input.txt");
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Practice work 11");
-        System.out.println("Collections, aggregation, wrapper class");
+        System.out.println("Practice work 13");
+        System.out.println("Abstract classes, interfaces, Comparable");
 
         boolean running = true;
 
@@ -19,6 +19,7 @@ public class Main {
             System.out.println("1 - Search object");
             System.out.println("2 - Create new object");
             System.out.println("3 - Show all objects");
+            System.out.println("4 - Show sorted objects");
             System.out.println("0 - Exit");
             System.out.print("Choose option: ");
 
@@ -30,6 +31,8 @@ public class Main {
                 createObjectMenu(scanner, store);
             } else if ("3".equals(choice)) {
                 store.showAll();
+            } else if ("4".equals(choice)) {
+                store.showSorted();
             } else if ("0".equals(choice)) {
                 FileManager.saveStoreToFile(store, "input.txt");
                 System.out.println("Data saved to input.txt.");
@@ -83,25 +86,22 @@ public class Main {
     private static void createObjectMenu(Scanner scanner, Store store) {
         System.out.println();
         System.out.println("Choose object type:");
-        System.out.println("1 - Phone");
-        System.out.println("2 - SmartPhone");
-        System.out.println("3 - KeypadPhone");
-        System.out.println("4 - GamingPhone");
-        System.out.println("5 - BusinessPhone");
+        System.out.println("1 - SmartPhone");
+        System.out.println("2 - KeypadPhone");
+        System.out.println("3 - GamingPhone");
+        System.out.println("4 - BusinessPhone");
         System.out.println("0 - Back to main menu");
         System.out.print("Choose type: ");
 
         String choice = scanner.nextLine();
 
         if ("1".equals(choice)) {
-            createBasePhone(scanner, store);
-        } else if ("2".equals(choice)) {
             createSmartPhone(scanner, store);
-        } else if ("3".equals(choice)) {
+        } else if ("2".equals(choice)) {
             createKeypadPhone(scanner, store);
-        } else if ("4".equals(choice)) {
+        } else if ("3".equals(choice)) {
             createGamingPhone(scanner, store);
-        } else if ("5".equals(choice)) {
+        } else if ("4".equals(choice)) {
             createBusinessPhone(scanner, store);
         } else if ("0".equals(choice)) {
             System.out.println("Back to main menu.");
@@ -113,36 +113,6 @@ public class Main {
     private static int readQuantity(Scanner scanner) {
         System.out.print("Quantity: ");
         return Integer.parseInt(scanner.nextLine());
-    }
-
-    private static void createBasePhone(Scanner scanner, Store store) {
-        try {
-            System.out.print("Brand: ");
-            String brand = scanner.nextLine();
-
-            System.out.print("Model: ");
-            String model = scanner.nextLine();
-
-            System.out.print("Price: ");
-            double price = Double.parseDouble(scanner.nextLine());
-
-            System.out.print("Year: ");
-            int year = Integer.parseInt(scanner.nextLine());
-
-            System.out.print("Memory (GB): ");
-            int memory = Integer.parseInt(scanner.nextLine());
-
-            int quantity = readQuantity(scanner);
-
-            Phone phone = new Phone(brand, model, price, year, memory, PhoneType.BUTTON_PHONE);
-            store.addNewPhone(phone, quantity);
-
-            System.out.println("Phone was added successfully.");
-        } catch (NumberFormatException e) {
-            System.out.println("Error: numeric value expected.");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
     }
 
     private static void createSmartPhone(Scanner scanner, Store store) {

@@ -10,23 +10,26 @@ public class Main {
         ArrayList<Phone> phones = FileManager.loadFromFile("input.txt");
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Practice work 9");
-        System.out.println("File loading and saving");
+        System.out.println("Practice work 10");
+        System.out.println("Search in collections");
 
         boolean running = true;
 
         while (running) {
             System.out.println();
-            System.out.println("1 - Create new object");
-            System.out.println("2 - Show all objects");
+            System.out.println("1 - Search object");
+            System.out.println("2 - Create new object");
+            System.out.println("3 - Show all objects");
             System.out.println("0 - Exit");
             System.out.print("Choose option: ");
 
             String choice = scanner.nextLine();
 
             if ("1".equals(choice)) {
-                createObjectMenu(scanner, phones);
+                searchMenu(scanner, phones);
             } else if ("2".equals(choice)) {
+                createObjectMenu(scanner, phones);
+            } else if ("3".equals(choice)) {
                 showPhones(phones);
             } else if ("0".equals(choice)) {
                 FileManager.saveToFile(phones, "input.txt");
@@ -38,6 +41,92 @@ public class Main {
         }
 
         scanner.close();
+    }
+
+    private static void searchMenu(Scanner scanner, ArrayList<Phone> phones) {
+        System.out.println();
+        System.out.println("Search by:");
+        System.out.println("1 - Brand");
+        System.out.println("2 - Year");
+        System.out.println("3 - Maximum price");
+        System.out.println("0 - Back to main menu");
+        System.out.print("Choose option: ");
+
+        String choice = scanner.nextLine();
+
+        if ("1".equals(choice)) {
+            searchByBrand(scanner, phones);
+        } else if ("2".equals(choice)) {
+            searchByYear(scanner, phones);
+        } else if ("3".equals(choice)) {
+            searchByMaxPrice(scanner, phones);
+        } else if ("0".equals(choice)) {
+            System.out.println("Back to main menu.");
+        } else {
+            System.out.println("Invalid search option.");
+        }
+    }
+
+    private static void searchByBrand(Scanner scanner, ArrayList<Phone> phones) {
+        System.out.print("Enter brand: ");
+        String brand = scanner.nextLine();
+
+        boolean found = false;
+
+        for (Phone phone : phones) {
+            if (phone.getBrand().equalsIgnoreCase(brand)) {
+                System.out.println(phone);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No objects found.");
+        }
+    }
+
+    private static void searchByYear(Scanner scanner, ArrayList<Phone> phones) {
+        try {
+            System.out.print("Enter year: ");
+            int year = Integer.parseInt(scanner.nextLine());
+
+            boolean found = false;
+
+            for (Phone phone : phones) {
+                if (phone.getYear() == year) {
+                    System.out.println(phone);
+                    found = true;
+                }
+            }
+
+            if (!found) {
+                System.out.println("No objects found.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Error: year must be numeric.");
+        }
+    }
+
+    private static void searchByMaxPrice(Scanner scanner, ArrayList<Phone> phones) {
+        try {
+            System.out.print("Enter maximum price: ");
+            double maxPrice = Double.parseDouble(scanner.nextLine());
+
+            boolean found = false;
+
+            for (Phone phone : phones) {
+                if (phone.getPrice() <= maxPrice) {
+                    System.out.println(phone);
+                    found = true;
+                }
+            }
+
+            if (!found) {
+                System.out.println("No objects found.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Error: price must be numeric.");
+        }
     }
 
     private static void createObjectMenu(Scanner scanner, ArrayList<Phone> phones) {

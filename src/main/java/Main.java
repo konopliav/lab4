@@ -6,11 +6,17 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
+        if (args.length == 0) {
+            System.out.println("Usage: java Main db.properties");
+            return;
+        }
+
+        DatabaseManager databaseManager = new DatabaseManager(args[0]);
         Store store = FileManager.loadStoreFromFile("input.txt");
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Practice work 11");
-        System.out.println("Collections, aggregation, wrapper class");
+        System.out.println("Practice work 12");
+        System.out.println("JDBC database saving");
 
         boolean running = true;
 
@@ -27,7 +33,7 @@ public class Main {
             if ("1".equals(choice)) {
                 searchMenu(scanner, store);
             } else if ("2".equals(choice)) {
-                createObjectMenu(scanner, store);
+                createObjectMenu(scanner, store, databaseManager);
             } else if ("3".equals(choice)) {
                 store.showAll();
             } else if ("0".equals(choice)) {
@@ -80,7 +86,8 @@ public class Main {
         }
     }
 
-    private static void createObjectMenu(Scanner scanner, Store store) {
+    private static void createObjectMenu(Scanner scanner, Store store,
+                                         DatabaseManager databaseManager) {
         System.out.println();
         System.out.println("Choose object type:");
         System.out.println("1 - Phone");
@@ -94,15 +101,15 @@ public class Main {
         String choice = scanner.nextLine();
 
         if ("1".equals(choice)) {
-            createBasePhone(scanner, store);
+            createBasePhone(scanner, store, databaseManager);
         } else if ("2".equals(choice)) {
-            createSmartPhone(scanner, store);
+            createSmartPhone(scanner, store, databaseManager);
         } else if ("3".equals(choice)) {
-            createKeypadPhone(scanner, store);
+            createKeypadPhone(scanner, store, databaseManager);
         } else if ("4".equals(choice)) {
-            createGamingPhone(scanner, store);
+            createGamingPhone(scanner, store, databaseManager);
         } else if ("5".equals(choice)) {
-            createBusinessPhone(scanner, store);
+            createBusinessPhone(scanner, store, databaseManager);
         } else if ("0".equals(choice)) {
             System.out.println("Back to main menu.");
         } else {
@@ -115,7 +122,8 @@ public class Main {
         return Integer.parseInt(scanner.nextLine());
     }
 
-    private static void createBasePhone(Scanner scanner, Store store) {
+    private static void createBasePhone(Scanner scanner, Store store,
+                                        DatabaseManager databaseManager) {
         try {
             System.out.print("Brand: ");
             String brand = scanner.nextLine();
@@ -136,6 +144,7 @@ public class Main {
 
             Phone phone = new Phone(brand, model, price, year, memory, PhoneType.BUTTON_PHONE);
             store.addNewPhone(phone, quantity);
+            databaseManager.insertPhone(phone, quantity);
 
             System.out.println("Phone was added successfully.");
         } catch (NumberFormatException e) {
@@ -145,7 +154,8 @@ public class Main {
         }
     }
 
-    private static void createSmartPhone(Scanner scanner, Store store) {
+    private static void createSmartPhone(Scanner scanner, Store store,
+                                         DatabaseManager databaseManager) {
         try {
             System.out.print("Brand: ");
             String brand = scanner.nextLine();
@@ -173,6 +183,7 @@ public class Main {
             Phone phone = new SmartPhone(brand, model, price, year, memory,
                     operatingSystem, hasFiveG);
             store.addNewPhone(phone, quantity);
+            databaseManager.insertPhone(phone, quantity);
 
             System.out.println("SmartPhone was added successfully.");
         } catch (NumberFormatException e) {
@@ -182,7 +193,8 @@ public class Main {
         }
     }
 
-    private static void createKeypadPhone(Scanner scanner, Store store) {
+    private static void createKeypadPhone(Scanner scanner, Store store,
+                                          DatabaseManager databaseManager) {
         try {
             System.out.print("Brand: ");
             String brand = scanner.nextLine();
@@ -210,6 +222,7 @@ public class Main {
             Phone phone = new KeypadPhone(brand, model, price, year, memory,
                     hasTorch, keyboardType);
             store.addNewPhone(phone, quantity);
+            databaseManager.insertPhone(phone, quantity);
 
             System.out.println("KeypadPhone was added successfully.");
         } catch (NumberFormatException e) {
@@ -219,7 +232,8 @@ public class Main {
         }
     }
 
-    private static void createGamingPhone(Scanner scanner, Store store) {
+    private static void createGamingPhone(Scanner scanner, Store store,
+                                          DatabaseManager databaseManager) {
         try {
             System.out.print("Brand: ");
             String brand = scanner.nextLine();
@@ -253,6 +267,7 @@ public class Main {
             Phone phone = new GamingPhone(brand, model, price, year, memory,
                     operatingSystem, hasFiveG, hasCoolingSystem, batteryCapacity);
             store.addNewPhone(phone, quantity);
+            databaseManager.insertPhone(phone, quantity);
 
             System.out.println("GamingPhone was added successfully.");
         } catch (NumberFormatException e) {
@@ -262,7 +277,8 @@ public class Main {
         }
     }
 
-    private static void createBusinessPhone(Scanner scanner, Store store) {
+    private static void createBusinessPhone(Scanner scanner, Store store,
+                                            DatabaseManager databaseManager) {
         try {
             System.out.print("Brand: ");
             String brand = scanner.nextLine();
@@ -296,6 +312,7 @@ public class Main {
             Phone phone = new BusinessPhone(brand, model, price, year, memory,
                     operatingSystem, hasFiveG, hasESim, securityLevel);
             store.addNewPhone(phone, quantity);
+            databaseManager.insertPhone(phone, quantity);
 
             System.out.println("BusinessPhone was added successfully.");
         } catch (NumberFormatException e) {

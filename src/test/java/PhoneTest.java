@@ -9,8 +9,8 @@ class PhoneTest {
 
     @Test
     void shouldThrowExceptionWhenInvalidValueInSetter() {
-        Phone phone = new Phone("Apple", "iPhone 15", 999.99, 2023,
-                128, PhoneType.SMARTPHONE);
+        Phone phone = new SmartPhone("Apple", "iPhone 15", 999.99, 2023,
+                128, "iOS", true);
 
         assertThrows(IllegalArgumentException.class, () -> {
             phone.setPrice(-10);
@@ -20,8 +20,8 @@ class PhoneTest {
     @Test
     void shouldThrowExceptionWhenInvalidConstructorData() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new Phone("", "Galaxy", -5, 1999,
-                    -10, PhoneType.SMARTPHONE);
+            new SmartPhone("", "Galaxy", -5, 1999,
+                    -10, "Android", true);
         });
     }
 }

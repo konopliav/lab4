@@ -89,13 +89,14 @@ public class FileManager {
                 throw new IllegalArgumentException("Invalid PHONE data.");
             }
 
-            return new Phone(
+            return new KeypadPhone(
                     parts[1],
                     parts[2],
                     Double.parseDouble(parts[3]),
                     Integer.parseInt(parts[4]),
                     Integer.parseInt(parts[5]),
-                    PhoneType.valueOf(parts[6])
+                    false,
+                    "basic"
             );
         }
 
@@ -231,13 +232,6 @@ public class FileManager {
                     quantity;
         }
 
-        return "PHONE;" +
-                phone.getBrand() + ";" +
-                phone.getModel() + ";" +
-                phone.getPrice() + ";" +
-                phone.getYear() + ";" +
-                phone.getMemory() + ";" +
-                phone.getType() + ";" +
-                quantity;
+        return "";
     }
 }

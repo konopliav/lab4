@@ -10,20 +10,11 @@ public class Store {
     private ArrayList<Phone> phones;
     private ArrayList<Integer> quantities;
 
-    /**
-     * Creates empty store.
-     */
     public Store() {
         phones = new ArrayList<>();
         quantities = new ArrayList<>();
     }
 
-    /**
-     * Adds new phone or increases quantity if phone already exists.
-     *
-     * @param phone phone object
-     * @param quantity phone quantity
-     */
     public void addNewPhone(Phone phone, int quantity) {
         if (phone == null) {
             throw new IllegalArgumentException("Phone cannot be null.");
@@ -44,9 +35,6 @@ public class Store {
         quantities.add(quantity);
     }
 
-    /**
-     * Shows all phones with quantity.
-     */
     public void showAll() {
         if (phones.isEmpty()) {
             System.out.println("Store is empty.");
@@ -58,32 +46,18 @@ public class Store {
         }
     }
 
-    /**
-     * Shows all phones sorted by default Comparable logic.
-     */
-    public void showSorted() {
-        if (phones.isEmpty()) {
-            System.out.println("Store is empty.");
-            return;
-        }
-
-        ArrayList<Phone> sortedPhones = copyPhones();
-        Collections.sort(sortedPhones);
-        printSortedPhones(sortedPhones);
-    }
-
-    /**
-     * Shows all phones sorted by selected lambda comparator.
-     *
-     * @param option sorting option
-     */
     public void showSortedWithComparator(int option) {
         if (phones.isEmpty()) {
             System.out.println("Store is empty.");
             return;
         }
 
-        ArrayList<Phone> sortedPhones = copyPhones();
+        ArrayList<Phone> sortedPhones = new ArrayList<>();
+
+        for (Phone phone : phones) {
+            sortedPhones.add(phone);
+        }
+
         Comparator<Phone> comparator;
 
         if (option == 1) {
@@ -101,14 +75,30 @@ public class Store {
         }
 
         Collections.sort(sortedPhones, comparator);
-        printSortedPhones(sortedPhones);
+
+        for (Phone phone : sortedPhones) {
+            int index = phones.indexOf(phone);
+            System.out.println(phone + " | quantity: " + quantities.get(index));
+        }
     }
 
-    /**
-     * Searches phones by brand.
-     *
-     * @param brand phone brand
-     */
+    public void searchByUuid(String uuidText) {
+        try {
+            java.util.UUID uuid = java.util.UUID.fromString(uuidText);
+
+            for (int i = 0; i < phones.size(); i++) {
+                if (phones.get(i).getUuid().equals(uuid)) {
+                    System.out.println(phones.get(i) + " | quantity: " + quantities.get(i));
+                    return;
+                }
+            }
+
+            System.out.println("Object not found.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid UUID format.");
+        }
+    }
+
     public void searchByBrand(String brand) {
         boolean found = false;
 
@@ -124,11 +114,6 @@ public class Store {
         }
     }
 
-    /**
-     * Searches phones by year.
-     *
-     * @param year phone release year
-     */
     public void searchByYear(int year) {
         boolean found = false;
 
@@ -144,11 +129,6 @@ public class Store {
         }
     }
 
-    /**
-     * Searches phones by maximum price.
-     *
-     * @param maxPrice maximum phone price
-     */
     public void searchByMaxPrice(double maxPrice) {
         boolean found = false;
 
@@ -164,38 +144,15 @@ public class Store {
         }
     }
 
-    /**
-     * Creates copy of phone list for sorting.
-     *
-     * @return copied phone list
-     */
-    private ArrayList<Phone> copyPhones() {
-        ArrayList<Phone> copiedPhones = new ArrayList<>();
-
-        for (Phone phone : phones) {
-            copiedPhones.add(phone);
-        }
-
-        return copiedPhones;
-    }
-
-    /**
-     * Prints sorted phones with quantities.
-     *
-     * @param sortedPhones sorted phone list
-     */
-    private void printSortedPhones(ArrayList<Phone> sortedPhones) {
-        for (Phone phone : sortedPhones) {
-            int index = phones.indexOf(phone);
-            System.out.println(phone + " | quantity: " + quantities.get(index));
-        }
-    }
-
     public int size() {
         return phones.size();
     }
 
     public Phone getPhone(int index) {
+        return phones.get(index);
+    }
+
+    public Phone get(int index) {
         return phones.get(index);
     }
 

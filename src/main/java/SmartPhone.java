@@ -8,17 +8,6 @@ public class SmartPhone extends Phone {
     private String operatingSystem;
     private boolean hasFiveG;
 
-    /**
-     * Creates a smartphone object.
-     *
-     * @param brand phone brand
-     * @param model phone model
-     * @param price phone price
-     * @param year release year
-     * @param memory phone memory in GB
-     * @param operatingSystem operating system
-     * @param hasFiveG 5G support
-     */
     public SmartPhone(String brand, String model, double price, int year,
                       int memory, String operatingSystem, boolean hasFiveG) {
         super(brand, model, price, year, memory, PhoneType.SMARTPHONE);
@@ -34,7 +23,6 @@ public class SmartPhone extends Phone {
         if (operatingSystem == null || operatingSystem.trim().isEmpty()) {
             throw new IllegalArgumentException("Operating system cannot be empty.");
         }
-
         this.operatingSystem = operatingSystem;
     }
 
@@ -49,7 +37,8 @@ public class SmartPhone extends Phone {
     @Override
     public String toString() {
         return "SmartPhone{" +
-                "brand='" + getBrand() + '\'' +
+                "uuid=" + getUuid() +
+                ", brand='" + getBrand() + '\'' +
                 ", model='" + getModel() + '\'' +
                 ", price=" + getPrice() +
                 ", year=" + getYear() +

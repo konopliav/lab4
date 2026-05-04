@@ -1,10 +1,12 @@
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Abstract base class that represents a phone.
  */
-public abstract class Phone implements Comparable<Phone> {
+public abstract class Phone implements Comparable<Phone>, Identifiable {
 
+    private UUID uuid;
     private String brand;
     private String model;
     private double price;
@@ -14,6 +16,7 @@ public abstract class Phone implements Comparable<Phone> {
 
     public Phone(String brand, String model, double price, int year,
                  int memory, PhoneType type) {
+        uuid = UUID.randomUUID();
         setBrand(brand);
         setModel(model);
         setPrice(price);
@@ -22,22 +25,14 @@ public abstract class Phone implements Comparable<Phone> {
         setType(type);
     }
 
-    public Phone(Phone other) {
-        if (other == null) {
-            throw new IllegalArgumentException("Phone cannot be null.");
-        }
-
-        setBrand(other.brand);
-        setModel(other.model);
-        setPrice(other.price);
-        setYear(other.year);
-        setMemory(other.memory);
-        setType(other.type);
+    @Override
+    public UUID getUuid() {
+        return uuid;
     }
 
     @Override
     public int compareTo(Phone other) {
-        return this.model.compareToIgnoreCase(other.model);
+        return model.compareToIgnoreCase(other.model);
     }
 
     public String getBrand() {
@@ -48,7 +43,6 @@ public abstract class Phone implements Comparable<Phone> {
         if (brand == null || brand.trim().isEmpty()) {
             throw new IllegalArgumentException("Brand cannot be empty.");
         }
-
         this.brand = brand;
     }
 
@@ -60,7 +54,6 @@ public abstract class Phone implements Comparable<Phone> {
         if (model == null || model.trim().isEmpty()) {
             throw new IllegalArgumentException("Model cannot be empty.");
         }
-
         this.model = model;
     }
 
@@ -72,7 +65,6 @@ public abstract class Phone implements Comparable<Phone> {
         if (price <= 0) {
             throw new IllegalArgumentException("Price must be greater than 0.");
         }
-
         this.price = price;
     }
 
@@ -84,7 +76,6 @@ public abstract class Phone implements Comparable<Phone> {
         if (year < 2000 || year > 2026) {
             throw new IllegalArgumentException("Year must be between 2000 and 2026.");
         }
-
         this.year = year;
     }
 
@@ -96,7 +87,6 @@ public abstract class Phone implements Comparable<Phone> {
         if (memory <= 0) {
             throw new IllegalArgumentException("Memory must be greater than 0.");
         }
-
         this.memory = memory;
     }
 
@@ -108,14 +98,14 @@ public abstract class Phone implements Comparable<Phone> {
         if (type == null) {
             throw new IllegalArgumentException("Phone type cannot be null.");
         }
-
         this.type = type;
     }
 
     @Override
     public String toString() {
         return "Phone{" +
-                "brand='" + brand + '\'' +
+                "uuid=" + uuid +
+                ", brand='" + brand + '\'' +
                 ", model='" + model + '\'' +
                 ", price=" + price +
                 ", year=" + year +

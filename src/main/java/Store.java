@@ -73,7 +73,7 @@ public class Store {
     }
 
     /**
-     * Shows all phones sorted by selected comparator.
+     * Shows all phones sorted by selected lambda comparator.
      *
      * @param option sorting option
      */
@@ -87,26 +87,14 @@ public class Store {
         Comparator<Phone> comparator;
 
         if (option == 1) {
-            comparator = new Comparator<Phone>() {
-                @Override
-                public int compare(Phone first, Phone second) {
-                    return first.getBrand().compareToIgnoreCase(second.getBrand());
-                }
-            };
+            comparator = (first, second) ->
+                    first.getBrand().compareToIgnoreCase(second.getBrand());
         } else if (option == 2) {
-            comparator = new Comparator<Phone>() {
-                @Override
-                public int compare(Phone first, Phone second) {
-                    return Double.compare(first.getPrice(), second.getPrice());
-                }
-            };
+            comparator = (first, second) ->
+                    Double.compare(first.getPrice(), second.getPrice());
         } else if (option == 3) {
-            comparator = new Comparator<Phone>() {
-                @Override
-                public int compare(Phone first, Phone second) {
-                    return Integer.compare(first.getYear(), second.getYear());
-                }
-            };
+            comparator = (first, second) ->
+                    Integer.compare(first.getYear(), second.getYear());
         } else {
             System.out.println("Invalid sorting option.");
             return;

@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Store class that contains phones and their quantities.
@@ -58,7 +59,7 @@ public class Store {
     }
 
     /**
-     * Shows all phones sorted by model.
+     * Shows all phones sorted by default Comparable logic.
      */
     public void showSorted() {
         if (phones.isEmpty()) {
@@ -66,18 +67,53 @@ public class Store {
             return;
         }
 
-        ArrayList<Phone> sortedPhones = new ArrayList<>();
-
-        for (Phone phone : phones) {
-            sortedPhones.add(phone);
-        }
-
+        ArrayList<Phone> sortedPhones = copyPhones();
         Collections.sort(sortedPhones);
+        printSortedPhones(sortedPhones);
+    }
 
-        for (Phone phone : sortedPhones) {
-            int index = phones.indexOf(phone);
-            System.out.println(phone + " | quantity: " + quantities.get(index));
+    /**
+     * Shows all phones sorted by selected comparator.
+     *
+     * @param option sorting option
+     */
+    public void showSortedWithComparator(int option) {
+        if (phones.isEmpty()) {
+            System.out.println("Store is empty.");
+            return;
         }
+
+        ArrayList<Phone> sortedPhones = copyPhones();
+        Comparator<Phone> comparator;
+
+        if (option == 1) {
+            comparator = new Comparator<Phone>() {
+                @Override
+                public int compare(Phone first, Phone second) {
+                    return first.getBrand().compareToIgnoreCase(second.getBrand());
+                }
+            };
+        } else if (option == 2) {
+            comparator = new Comparator<Phone>() {
+                @Override
+                public int compare(Phone first, Phone second) {
+                    return Double.compare(first.getPrice(), second.getPrice());
+                }
+            };
+        } else if (option == 3) {
+            comparator = new Comparator<Phone>() {
+                @Override
+                public int compare(Phone first, Phone second) {
+                    return Integer.compare(first.getYear(), second.getYear());
+                }
+            };
+        } else {
+            System.out.println("Invalid sorting option.");
+            return;
+        }
+
+        Collections.sort(sortedPhones, comparator);
+        printSortedPhones(sortedPhones);
     }
 
     /**
@@ -137,6 +173,33 @@ public class Store {
 
         if (!found) {
             System.out.println("No objects found.");
+        }
+    }
+
+    /**
+     * Creates copy of phone list for sorting.
+     *
+     * @return copied phone list
+     */
+    private ArrayList<Phone> copyPhones() {
+        ArrayList<Phone> copiedPhones = new ArrayList<>();
+
+        for (Phone phone : phones) {
+            copiedPhones.add(phone);
+        }
+
+        return copiedPhones;
+    }
+
+    /**
+     * Prints sorted phones with quantities.
+     *
+     * @param sortedPhones sorted phone list
+     */
+    private void printSortedPhones(ArrayList<Phone> sortedPhones) {
+        for (Phone phone : sortedPhones) {
+            int index = phones.indexOf(phone);
+            System.out.println(phone + " | quantity: " + quantities.get(index));
         }
     }
 

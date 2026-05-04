@@ -9,8 +9,8 @@ public class Main {
         Store store = FileManager.loadStoreFromFile("input.txt");
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Practice work 13");
-        System.out.println("Abstract classes, interfaces, Comparable");
+        System.out.println("Practice work 14");
+        System.out.println("Inner classes and Comparator");
 
         boolean running = true;
 
@@ -32,7 +32,7 @@ public class Main {
             } else if ("3".equals(choice)) {
                 store.showAll();
             } else if ("4".equals(choice)) {
-                store.showSorted();
+                sortMenu(scanner, store);
             } else if ("0".equals(choice)) {
                 FileManager.saveStoreToFile(store, "input.txt");
                 System.out.println("Data saved to input.txt.");
@@ -80,6 +80,30 @@ public class Main {
             System.out.println("Back to main menu.");
         } else {
             System.out.println("Invalid search option.");
+        }
+    }
+
+    private static void sortMenu(Scanner scanner, Store store) {
+        System.out.println();
+        System.out.println("Choose sorting criteria:");
+        System.out.println("1 - Sort by brand");
+        System.out.println("2 - Sort by price");
+        System.out.println("3 - Sort by year");
+        System.out.println("0 - Back to main menu");
+        System.out.print("Choose option: ");
+
+        String choice = scanner.nextLine();
+
+        if ("1".equals(choice)) {
+            store.showSortedWithComparator(1);
+        } else if ("2".equals(choice)) {
+            store.showSortedWithComparator(2);
+        } else if ("3".equals(choice)) {
+            store.showSortedWithComparator(3);
+        } else if ("0".equals(choice)) {
+            System.out.println("Back to main menu.");
+        } else {
+            System.out.println("Invalid sorting option.");
         }
     }
 

@@ -41,8 +41,9 @@ public abstract class Phone implements Comparable<Phone>, Identifiable {
 
     public void setBrand(String brand) {
         if (brand == null || brand.trim().isEmpty()) {
-            throw new IllegalArgumentException("Brand cannot be empty.");
+            throw new InvalidFieldValueException("Brand cannot be empty.");
         }
+
         this.brand = brand;
     }
 
@@ -52,8 +53,9 @@ public abstract class Phone implements Comparable<Phone>, Identifiable {
 
     public void setModel(String model) {
         if (model == null || model.trim().isEmpty()) {
-            throw new IllegalArgumentException("Model cannot be empty.");
+            throw new InvalidFieldValueException("Model cannot be empty.");
         }
+
         this.model = model;
     }
 
@@ -63,8 +65,9 @@ public abstract class Phone implements Comparable<Phone>, Identifiable {
 
     public void setPrice(double price) {
         if (price <= 0) {
-            throw new IllegalArgumentException("Price must be greater than 0.");
+            throw new InvalidFieldValueException("Price must be greater than 0.");
         }
+
         this.price = price;
     }
 
@@ -74,8 +77,9 @@ public abstract class Phone implements Comparable<Phone>, Identifiable {
 
     public void setYear(int year) {
         if (year < 2000 || year > 2026) {
-            throw new IllegalArgumentException("Year must be between 2000 and 2026.");
+            throw new InvalidFieldValueException("Year must be between 2000 and 2026.");
         }
+
         this.year = year;
     }
 
@@ -85,8 +89,9 @@ public abstract class Phone implements Comparable<Phone>, Identifiable {
 
     public void setMemory(int memory) {
         if (memory <= 0) {
-            throw new IllegalArgumentException("Memory must be greater than 0.");
+            throw new InvalidFieldValueException("Memory must be greater than 0.");
         }
+
         this.memory = memory;
     }
 
@@ -96,8 +101,9 @@ public abstract class Phone implements Comparable<Phone>, Identifiable {
 
     public void setType(PhoneType type) {
         if (type == null) {
-            throw new IllegalArgumentException("Phone type cannot be null.");
+            throw new InvalidFieldValueException("Phone type cannot be null.");
         }
+
         this.type = type;
     }
 

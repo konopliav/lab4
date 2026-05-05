@@ -1,5 +1,8 @@
 import java.util.Scanner;
 
+/**
+ * Driver class.
+ */
 public class Main {
 
     public static void main(String[] args) {
@@ -84,7 +87,7 @@ public class Main {
             System.out.println("Phone added.");
         } catch (NumberFormatException e) {
             System.out.println("Error: numeric value expected.");
-        } catch (IllegalArgumentException e) {
+        } catch (InvalidFieldValueException e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
@@ -154,16 +157,11 @@ public class Main {
                     true
             );
 
-            boolean result = store.update(oldPhone, newPhone);
-
-            if (result) {
-                System.out.println("Phone updated.");
-            } else {
-                System.out.println("Phone not found.");
-            }
+            store.update(oldPhone, newPhone);
+            System.out.println("Phone updated.");
         } catch (NumberFormatException e) {
             System.out.println("Error: numeric value expected.");
-        } catch (IllegalArgumentException e) {
+        } catch (InvalidFieldValueException | ObjectNotFoundException e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
@@ -195,15 +193,12 @@ public class Main {
                 return;
             }
 
-            boolean result = store.delete(phone);
-
-            if (result) {
-                System.out.println("Phone deleted.");
-            } else {
-                System.out.println("Phone not found.");
-            }
+            store.delete(phone);
+            System.out.println("Phone deleted.");
         } catch (NumberFormatException e) {
             System.out.println("Error: index must be numeric.");
+        } catch (InvalidFieldValueException | ObjectNotFoundException e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 

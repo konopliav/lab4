@@ -2,6 +2,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * Store class that contains phones and their quantities.
+ */
 public class Store {
 
     private ArrayList<Phone> phones;
@@ -14,11 +17,11 @@ public class Store {
 
     public void addNewPhone(Phone phone, int quantity) {
         if (phone == null) {
-            throw new IllegalArgumentException("Phone cannot be null.");
+            throw new InvalidFieldValueException("Phone cannot be null.");
         }
 
         if (quantity <= 0) {
-            throw new IllegalArgumentException("Quantity must be greater than 0.");
+            throw new InvalidFieldValueException("Quantity must be greater than 0.");
         }
 
         for (int i = 0; i < phones.size(); i++) {
@@ -34,7 +37,7 @@ public class Store {
 
     public boolean update(Phone existingObject, Phone newObject) {
         if (existingObject == null || newObject == null) {
-            return false;
+            throw new InvalidFieldValueException("Phone cannot be null.");
         }
 
         for (int i = 0; i < phones.size(); i++) {
@@ -44,12 +47,12 @@ public class Store {
             }
         }
 
-        return false;
+        throw new ObjectNotFoundException("Phone for update was not found.");
     }
 
     public boolean delete(Phone existingObject) {
         if (existingObject == null) {
-            return false;
+            throw new InvalidFieldValueException("Phone cannot be null.");
         }
 
         for (int i = 0; i < phones.size(); i++) {
@@ -60,7 +63,7 @@ public class Store {
             }
         }
 
-        return false;
+        throw new ObjectNotFoundException("Phone for delete was not found.");
     }
 
     public void showAll() {
